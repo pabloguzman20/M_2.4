@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "backenduser",
+    "password": "superpassword",
+    "database": "banco",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "backenduser",
+    "password": "superpassword",
+    "database": "banco_test",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "backenduser",
+    "password": "superpassword",
+    "database": "banco_production",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
