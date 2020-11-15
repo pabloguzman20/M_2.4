@@ -7,22 +7,22 @@ const cuentahabientesdb = require("../modelosDB/cuentahabientes.js");
  * @param {*} req
  * @param {*} res
  */
-const mostrarCuentahabientes = async function(req,res){
+const mostrarCuentahabientes = async function (req, res) {
   let datos = await cuentahabientesdb.buscarTodos();
-  if(datos){
-    res.status(200).json(datos);
-  }else{
-    res.status(404).json({ error: "Error: No se encontraron registros." });
-  }
-}
+  datos
+    ? res.status(200).json(datos)
+    : res.status(404).json({ error: "Error: No se encontraron registros." });
+};
 
 /**
  * Funcion callback para mostrar un cuentahabiente por identificador.
  * @param {*} req
  * @param {*} res
  */
-const mostrarCuentahabientesPorId = function (req, res) {
-  let cuentaTemporal = cuentahabientes.buscarPorId(req.params.idCuentahabiente);
+const mostrarCuentahabientesPorId = async function (req, res) {
+  let cuentaTemporal = await cuentahabientesdb.buscarPorId(
+    req.params.idCuentahabiente
+  );
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(404).json({ error: `Error: No se encontro el registro.` });
@@ -33,8 +33,10 @@ const mostrarCuentahabientesPorId = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const mostrarCuentahabientePorNombre = function (req, res) {
-  let cuentaTemporal = cuentahabientes.buscarPorNombre(req.params.nombre);
+const mostrarCuentahabientePorNombre = async function (req, res) {
+  let cuentaTemporal = await cuentahabientesdb.buscarPorNombre(
+    req.params.nombre
+  );
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(404).json({ error: `Error: No se encontro el registro.` });
@@ -45,8 +47,8 @@ const mostrarCuentahabientePorNombre = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const mostrarCuentahabientePorTelefono = function (req, res) {
-  let cuentaTemporal = cuentahabientes.buscarPorTelefono(req.params.telefono);
+const mostrarCuentahabientePorTelefono = async function (req, res) {
+  let cuentaTemporal = await cuentahabientesdb.buscarPorTelefono(req.params.telefono);
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(404).json({ error: `Error: No se encontro el registro.` });
@@ -57,8 +59,11 @@ const mostrarCuentahabientePorTelefono = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const actualizarCuentahabiente = function (req, res) {
-  let cuentaTemporal = cuentahabientes.actualizarCuentahabiente(req.params.id,req.body);
+const actualizarCuentahabiente = async function (req, res) {
+  let cuentaTemporal = await cuentahabientes.actualizarCuentahabiente(
+    req.params.id,
+    req.body
+  );
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(400).json({ error: `Error: No se encontro el registro.` });
@@ -69,11 +74,11 @@ const actualizarCuentahabiente = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const crearCuentahabiente = function (req, res) {
-  let cuentaTemporal = cuentahabientes.crearCuentahabiente(req.body);
+const crearCuentahabiente = async function (req, res) {
+  let cuentaTemporal = await cuentahabientesdb.crearCuentahabiente(req.body);
   cuentaTemporal
     ? res.status(201).json(cuentaTemporal)
-    : res.status(400).json({ error: `Error: Informacion erronea.` });
+    : res.status(400).json({ error: `Error: Informacion de captura erronea.` });
 };
 
 //Exporto las funciones de este modulo para poder ser utilizadas en la aplicacion del servidor.

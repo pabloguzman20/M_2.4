@@ -20,6 +20,6 @@ router.delete('/:id', globalController.eliminarCuenta);
 
 router.patch('/deposito/:id', controladorCuenta.deposito);
 router.patch('/retiro/:id', controladorCuenta.retiro);
-router.patch('transferencia/:idUno/:idDos', controladorCuenta.transferencia);
+router.patch('/:idUno/:idDos', controladorCuenta.transferencia);
 
 module.exports = router;

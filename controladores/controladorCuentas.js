@@ -7,40 +7,25 @@ const cuentasdb = require("../modelosDB/cuentas.js");
  * @param {*} req
  * @param {*} res
  */
-const mostrarCuentas = async function(req,res){
+const mostrarCuentas = async function (req, res) {
   let datos = await cuentasdb.buscarTodos();
-  if(datos){
-    res.status(200).json(datos);
-  }else{
-    res.status(404).json({ error: "si no funca chingas a tu madre aweonado" });
-  }
-}
-
-const mostrarPorId = async function(req,res){
-  let datos = await cuentasdb.findById(req.params.id).
-  then(d => {
-    if(d){
-      res.status(200).json(datos);
-    }else{
-      res.status(404).json({error:"fallo"});
-    }
-  }).catch(error =>{
-    res.status(505).json({error:error});
-  })
-}
+  datos
+    ? res.status(200).json(datos)
+    : res.status(404).json({ error: "Error: No existen cuentas registradas." });
+};
 
 /**
  * Funcion callback para mostrar cuentas por identificador.
  * @param {*} req
  * @param {*} res
  */
-const mostrarCuentaPorId = function (req, res) {
-  let cuentaTemporal = cuentas.buscarPorId(req.params.id);
-  cuentaTemporal
-    ? res.status(200).json(cuentaTemporal)
-    : res.status(404).json({
-        error: `Error: No existe ninguna cuenta con ese identificador.`,
-      });
+const mostrarPorId = async function (req, res) {
+  let datos = await cuentasdb.buscarPorId(req.params.id);
+  datos
+    ? res.status(200).json(datos)
+    : res
+        .status(404)
+        .json({ error: "Error: No existen cuentas registradas con ese id." });
 };
 
 /**
@@ -48,8 +33,8 @@ const mostrarCuentaPorId = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const deposito = function (req, res) {
-  let cuentaTemporal = cuentas.depositarPorId(req.params.id, req.body);
+const deposito = async function (req, res) {
+  let cuentaTemporal = await cuentasdb.depositarPorId(req.params.id, req.body);
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(404).json({
@@ -62,8 +47,8 @@ const deposito = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const retiro = function (req, res) {
-  let cuentaTemporal = cuentas.retiroPorId(req.params.id, req.body);
+const retiro = async function (req, res) {
+  let cuentaTemporal = await cuentasdb.retiroPorId(req.params.id, req.body);
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(404).json({
@@ -76,8 +61,12 @@ const retiro = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const transferencia = function (req, res) {
-  let cuentaTemporal = cuentas.transferenciaPorId(req.params.idUno,req.params.idDos,req.body);
+const transferencia = async function (req, res) {
+  let cuentaTemporal = await cuentasdb.transferenciaPorId(
+    req.params.idUno,
+    req.params.idDos,
+    req.body
+  );
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(404).json({
@@ -90,12 +79,12 @@ const transferencia = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const agregar = function (req, res) {
-  let cuentaTemporal = cuentas.agregarCuenta(req.body);
+const agregar = async function (req, res) {
+  let cuentaTemporal = await cuentasdb.agregarCuentas(req.body);
   cuentaTemporal
     ? res.status(201).json(cuentaTemporal)
     : res.status(400).json({
-       error: `Error: La cuenta no se pudo crear con exito.` 
+        error: `Error: La cuenta no se pudo crear con exito.`,
       });
 };
 
@@ -104,8 +93,8 @@ const agregar = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-const consultar = function (req, res) {
-  let cuentaTemporal = cuentasdb.consultarSaldo(req.params.id);
+const consultar = async function (req, res) {
+  let cuentaTemporal = await cuentasdb.consultarSaldo(req.params.id);
   cuentaTemporal
     ? res.status(200).json(cuentaTemporal)
     : res.status(404).json({
@@ -121,4 +110,4 @@ exports.retiro = retiro;
 exports.transferencia = transferencia;
 exports.consultar = consultar;
 exports.mostrarCuentas = mostrarCuentas;
-exports.mostrarCuentaPorId = mostrarCuentaPorId;
+
